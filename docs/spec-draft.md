@@ -10,21 +10,61 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
 
 ### Behaviors & Services
 
+- A client API TCP server/cluster → A TCP/TLS socket that will respond to HTTP requests based on various HTTP methods and routes  (see Client Endpoints for details). This API is for the purpose of Clients.
+- A storage API TCP host server → A public TCP socket that will respond to HTTP requests. based on JSON-RPC commands and routes. Messages are authenticated via ECDSA between Nodes. The purpose of this API is for storing shards of data on the network to be geographically distributed.
+- A meta database API server → A public socket for Node communication. This layer is responsible for geographically distributing and storing user, file pointer/meta, and contact data.
+- A payout cron worker → The period of storage events is analyzed and a payout sheet and transaction is created and tokens are sent to other Nodes for services.
+- A general purpose cron worker → Runs several different scheduled task for data. finalization and maintenance. This includes analyzing storage events and giving them a final status (see SIP9 for more details).
+- A shard replication worker → It’s watching for shards to be lost and making an effort to replicate the shard to receive payments for storing the shard. The action should be able to proved to the shard’s user, to receive payment.
+- A shard repair worker → Watches for shards to be completely lost and will recover the missing shards so that it will receive payments for having the shard. The action should be able to proved to the shard’s user, to receive payment.
+
 ### Service Dependencies
+
+- Storj Nodes → To be able to store data it needs to join a network.
+- Ethereum Node/Wallet → For making STORJ token payments.
 
 ### Payout Cron Worker Behaviors
 
+- (todo) Needs to be specified.
+
 ### Meta Database Behaviors
+
+- (todo) Needs to be specified.
 
 ### Shard Replication Worker Behaviors
 
+- (todo) Needs to be specified.
+
 ### Shard Repair Worker Behaviors
+
+- (todo) Needs to be specified.
 
 ### Identity
 
+- The identity of a Storj Node is based on a 12-24 word phrase (based on BIP39), keys can be derived from this key for various purposes from signing network requests to deriving private keys for an Ethereum wallet. A nodeID is identified by a RIPEMD160(SHA256) hash of a public key.
+
 ### Authentication Methods
 
+- Node ECDSA RPC Authentication
+  - Authentication with hierarchically deterministic nodeIDs (Please see SIP32 for more details). Each JSON-RPC message is signed between Nodes.
+  - The nodeID is a public key hash of the private key used to sign messages.
+- Node ECDSA HTTP Authentication
+  - Storj Nodes can authenticate by signing requests and including the signature in the header of the HTTP request.
+  - The exact details of this authentication are in SIP6 (expanded for additional use cases)
+  - The headers x-node-id, x-node-timestamp, x-node-pubkey, x-node-signature are used for authentication.
+- Client ECDSA HTTP Authentication
+  - Users can authenticate by signing HTTP requests with included HTTP headers, as similar with Node ECDSA Authentication.
+  - Uses a different set of HTTP headers: x-client-id, x-client-timestamp, x-client-pubkey, x-client-signature.
+
 ### Client API Error Response Codes
+
+- 400 → Bad request. The request supplied invalid arguments.
+- 401 → Not authorized. The resource requires authentication.
+- 404 → Not found. The resource is not found.
+- 420 → Transfer rate limit. This rate limit code is given for uploads and downloads when the rate of bytes transferred exceeds configurable thresholds.
+- 429 → Request rate limit. This rate limit code is given when the number of requests per minute exceeds the configurable thresholds per each endpoint.
+- 500 → Internal service error. The server experienced an internal error when processing the request.
+- 503 → Service unavailable. The service is currently unavailable.
 
 ### Client Endpoints
 
