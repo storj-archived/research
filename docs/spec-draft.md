@@ -31,7 +31,7 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
 ### Storage API
 
 - `POST /` with JSON-RPC commands:
-  - `PING` → Request to send back a PONG 
+  - `PING` → Request to send back a PONG
     - Authorization
       - None
     - Params
@@ -53,9 +53,41 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
       - signature → ECDSA signature data for the request
     - Response
       - (empty object)
-  - `RETRIEVE`
-  - `ALLOC`
-  - `RENEW`
+  - `RETRIEVE` → Request to download a shard. The shard’s contract describes which identity will pay for the shard, and therefore which requests to authorize to receive a token to download.
+    - Authorization
+      - Must be authenticated with identity on the shard contract
+    - Params
+      - contact → The requesters contact object
+      - data_hash → The hash of the requested data
+      - nonce → Used for signature verification
+      - signature → ECDSA signature data for the request
+    Response
+      - token → The token for downloading the shard
+  - `ALLOC` → Request to upload a shard and responds with a token
+    - Authorization
+      - An algorithm for determining if the request is within acceptable thresholds for expected payout, and if the asking Node has a positive reputation for making payments. In the case that the request is reject a list of reasons should be given as to reason for the rejection.
+    - Params
+      - contact → The requesters contact object
+      - dataHash → The hash of the data
+      - dataSize → The size of the data in bytes
+      - storeBegin → When the data is initially to be stored
+      - storeEnd → Desired length of storage
+      - nonce → Used for signature verification
+      - signature → ECDSA signature data for the request
+    - Response
+      - contract → A farmer signed contract object
+      - token → A token to upload data for the shard
+  - `RENEW` → Request to renew length of shard storage
+    - Authorization
+      - Must be authenticated with identity on the shard contract
+    - Params
+      - dataHash → The data that should be renewed
+      - storeEnd → The new end date
+      - nonce →Used for signature verification
+      - signature → ECDSA signature data for the request
+    - Response
+      - dataHash → The data hash that was renewed
+      - storeEnd → The new store end date
 
 ### Storage Transfer API
 
@@ -66,7 +98,7 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
     - 200 → Success
   - Behaviors
     - Once the shard has been successfully transferred an exchange report is sent to the Bridge for the shard to confirm the transfer.
-- `POST /shards/<shard-hash>?token=<token>` → Upload a shard 
+- `POST /shards/<shard-hash>?token=<token>` → Upload a shard
   - Authorization
     - The token must be found and associated with the shard hash
   - Responses
