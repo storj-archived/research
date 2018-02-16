@@ -68,6 +68,233 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
 
 ### Client Endpoints
 
+#### Users
+- `POST /users` → Creates a user in the network, a user is required to authenticate with many of the other endpoints.
+  - Authorization
+    Request must be signed by a user
+  - Body params
+    - pubkey (required, ECDSA 256-bit compressed public key)
+    - referralPartner (optional, partner code string, example “filezilla”)
+    - email (optional, valid email address)
+  - Responses
+    - 201 → Successfully created user
+    - 400 → Bad request params or user already exists
+  - Response body (user object)
+    - referralPartner    (partner string)
+    - created    (ISO 8601 date string)
+    - id (hash of public key)
+    - email (email string)
+    - deleted (boolean)
+- `DELETE /users/:id` → Prepares user to be schedule to be deleted. There is a grace period before complete removal. All data associated with the user should be closed out and no longer kept around, repaired or replicated.
+  - Authorization
+    - Requires user authentication
+  - Request body params
+    - redirect (A redirect <url> for the email)
+  - Responses
+    - 200 → Email has been dispatched
+  - Response body
+    - (user object)
+- `GET /users/confirmations/:token?redirect=<url>` → Confirm different actions such as confirming an email address.
+  - Authorization
+    - No authentication (aside from knowing the activation token)
+  - Responses
+    - 200 → Action has been confirmed
+    - 302 → Action has been confirmed and redirecting to <url>
+  - Response body
+    - (user object)
+
+#### Files
+- `GET /files?startDate=<timestamp>?tag=<tag>` → List user files sorted by timestamp or by tag.
+  - Authorization
+    - Requires user authentication
+  - Responses
+    - 200 → Successfully found results
+  - Response body
+    - An array of “bucket entry” objects
+      - bucket → bucket id
+      - mimetype (unused)
+      - filename → The encrypted filename
+      - frame → frame id that describes all the shards of the file
+      - size → The client reported file size
+      - id → The file id
+      - created → The date the file was created (ISO 8601 date string)
+      - hmac → An object with properties for “value” and “type”
+- `GET /file-ids/:name` → Get file id by encrypted name
+  - Authorization
+    - Requires user authentication
+  - Request body params
+  - Responses
+    - 404 → Not found
+    - 200 → Successfully found file
+  - Response body
+    - id → Matching file id
+- `GET /files/:file?skip=<number>&limit=<number>&exclude=<node-ids>` → Get pointers for a file to retrieve from Nodes. This request reaches out the the network of Storj Nodes and asks several of them for a shard download token. Multiple requests to this endpoint is necessary to retrieve all of the shards for a file. A best effort is made to retrieve tokens to download the shard however there is a possibility that the shard will no longer be accessible. Clients are designed to handle this case and can recover the shard with erasure encoding. The shard hashes will be returned in the request even if a download token can not be retrieved.
+  - Authentication
+    - Requires user authentication
+    - Optional token based authorization (unused)
+  - Responses
+    - 404 → Not found
+    - 420 → Transfer rate error
+  - Response body
+    - An array of shard objects
+      - token → The download token used to download the shard from the Node
+      - hash → The hash of the shard
+      - index → The index of the shard in the file
+      - size → The size of the shard in bytes
+      - node → An object that describes the Node
+      - address → The hostname that the Node is reachable
+      - port → The port the Node is reachable
+      - nodeID → The id of the Node
+- `DELETE /files/:file` → Delete a file from a bucket. Will cascade deletion of all  associated data, and marks data as no longer used using storage events stored locally at the Node.
+  - Authorization
+    - Requires user authentication
+  - Responses
+    - 204 → Successfully deleted file
+    - 404 → File not found
+- `GET /files/:file/info` → Gets all information about a file.
+  - Authorization
+    - Requires user authentication
+  - Responses
+    - 404 → File not found
+    - 200 → Success
+  - Response body
+    - user → The user id
+    - name → Encrypted filename
+    - shards → An array of objects
+    - hash → The hash of the shard
+    - parity → Boolean if the shard is parity
+    - bytes → The bytes of the shard
+    - nodes → An array of Todes
+    - begin → A timestamp in milliseconds
+    - end → A timestamp in milliseconds
+    - id → The farmer id
+    - bytes → Client reported size of file
+    - id → file id
+    - created → The created timestamp in milliseconds
+    - hmac → An object with “type” and “value” properties
+    - erasure → An string that describes the erasure encoding used
+    - index → A key derivation index for encryption/decryption
+    - tags → An array of tags
+- POST /files → Create a new empty file that will get updated with additional shards.
+  - Authorization
+    - Requires user authentication
+  - Request body params
+    - filename → The encrypted filename
+    - hmac → An object with “type” and “value” properties. Valid types include “sha512”, “sha256” and “ripemd160”, the value should be a hex string.
+    - erasure → A string that indicates the erasure encoding. Valid values include “reedsolomon”.
+    - index → A 256-bit number as hex string. Used for derivation of a key for file encryption/decryption.
+    - tags → An array of ids or words
+  - Responses
+    - 400 → Bad request error, some of the body params may have an issue, such as exceeding maximum lengths.
+    - 201 → Successfully created file
+  - Response body (file object)
+- `PUT /files/:file/shards/:index` → Requests to add a shard to a file. This will make a network call to several Storj Nodes to see which Nodes are available to store data. Nodes are selected based on reputation currently using the responseTime metric of a contact. See SIP6 for more details.
+  - Authorization
+    - Requires user authentication
+    - Request body params
+      - exclude → A list of nodeIDs to exclude
+      - size → The size of the shard in bytes
+      - hash → The hash of the shard
+      - parity → Boolean if the shard is parity
+  - Responses
+    - 200 → Success
+    - 503 → Unable to get an upload offer from a Node in time
+    - 400 → Invalid requests
+    - 420 → Transfer rate limit exceeded
+  - Response body
+    - hash → The hash of the shard
+    - token → The authorization token for uploading to the Node
+    - node → An object describing where to find the Node
+    - address → The publicly reachable IP address of the Node
+    - port → The publicly reachable port of the Node
+    - nodeID → The nodeID
+- `POST /reports` → Creates a new exchange report describing a data transfer between Client and Node. Reports of the message MIRROR_SUCCESS, MIRROR_FAILED, SHARD_UPLOADED and DOWNLOAD_ERROR will all trigger a shard to be replicated. Note: Please see SIP9 for further details on how exchange reports are handled.
+  - Authorization
+    - Requires user or Node authentication
+  - Request body params
+    - token → The token used for the shard transfer used to lookup the storage event
+    - exchangeResultCode → 1000 for success, and 1100 for failure
+    - exchangeResultMessage → The associated message for the report
+    - exchangeStart → A unix timestamp in milliseconds when the transfer started
+    - exchangeEnd → A unix timestamp in milliseconds when the transfer ended
+  - Responses
+    - 200 → The report has already been submitted
+    - 201 → The storage event was updated with the exchange report
+    - 404 → The token does not match any existing storage event
+    - 400 → Invalid exchange report
+  - Response body
+    - (empty object)
+
+#### Node Contacts
+
+- `GET /contacts?address=<address>&skip=<number>&limit=<number>` → Get a list of contacts matching the query. Note: Reputation metrics and other metrics are not included here as this will be data that is only for a specific Node.
+  - Authorization
+    - No authentication
+  - Responses
+    - 200 → Successfully found contacts
+  - Response body
+    - An array of contact objects
+      - spaceAvailable → If space is reported to be available
+      - port → The port that can be used when connecting to the Node
+      - address → The IP address for connecting to the Node
+      - protocol → The protocol version of the contact
+      - nodeID → The id of the Node
+- `GET /contacts/:nodeID` → Get a specific contact by nodeID.
+  - Authorization
+    - No authentication
+  - Responses
+    - 404 → Not found
+    - 200 → Found contact
+  - Response body
+    - (contact object)
+- `PATCH /contacts/:nodeID` → Update a contact.
+  - Authentication
+    - Requires Node authentication
+  - Request body params
+    - address → The UP address that the Node can be reached
+    - port → The port the farmer can be reached
+    - protocol → The protocol version of the Node
+    - spaceAvailable → If the Node has any space available
+  - Responses
+    - 201 → Contact was updated (bug: should likely be 200 since a new contact wasn’t created)
+  - Response body (bug: should be whole contact object)
+    - nodeID → The updated nodeID
+    - address → The updated address
+    - port → The updated port
+    - spaceAvailable → The updated spaceAvailable value
+- `POST /contacts` → Create a new Node contact
+  - Authorization
+    - Requires completing proof-of-work challenge
+  - Request body params
+    - address → The IP address of the Node
+    - port → The port of the Node
+    - spaceAvailable → A boolean of the space available
+    - protocol → The protocol version
+  - Responses
+    - 200 → The contact was successfully created
+  - Response body
+    - nodeID →The nodeID of the Node
+    - address → The address of the Node
+    - port → The port of the Node
+- `POST /contacts/challenges` → Gets a proof-of-work challenge to create a new contact. Please see SIP6 for further details on the challenge.
+  - Authorization
+    - No authentication
+  - Responses
+    - 201 → Successfully created challenge
+  - Response body
+    - challenge → A 256-bit hex string to be hashed
+    - target → A 256-bit hex string which the resulting hash must be less than
+
+#### Health
+- `GET /health` → Get the health of the server
+  - Authorization
+    - No authentication
+  - Responses
+    - 503 → Service unavailable
+    - 200 → Success
+  - Response body
+    - (empty object)
+
 ### Storage API
 
 - `POST /` with JSON-RPC commands:
