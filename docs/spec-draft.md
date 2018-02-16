@@ -175,7 +175,7 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
     - erasure → An string that describes the erasure encoding used
     - index → A key derivation index for encryption/decryption
     - tags → An array of tags
-- POST /files → Create a new empty file that will get updated with additional shards.
+- `POST /files` → Create a new empty file that will get updated with additional shards.
   - Authorization
     - Requires user authentication
   - Request body params
