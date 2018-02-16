@@ -4,6 +4,8 @@ This a draft and working document for an informal specification of an improved S
 
 There are two main groups of responsibilities; Storj Node and Storj Client. A Storj Node is responsible for storing data geographically distributed with other Storj Nodes. This includes a database layer for file pointer and meta data, and a storage layer for larger file shards. A network of Storj Nodes is responsible for maintaining, replicating and repairing data when it’s lost. Storj Nodes pay each other in cryptocurrency STORJ tokens for storage and bandwidth. The Client is responsible for encrypting, erasure encoding and transferring files to Storj Nodes.
 
+-----------------------------------------
+
 ## Storj Node
 
 A Storj Node exposes an interface for Clients to communicate to store and retrieve meta data that describes the locations of the shards that make up files, and for downloading shard data in the network. The client layer API is exposed over a TCP/TLS socket with HTTP with JSON requests and responses most often over TLS. The storage layer interface is a JSON-RPC API over a TCP socket over HTTP.  There are RPC commands for storing and retrieving arbitrary data with contracts from a Node, and endpoints for transferring data to Clients in the network over HTTP. Implements SIP5, SIP6 and SIP9
@@ -373,6 +375,8 @@ A Storj Node exposes an interface for Clients to communicate to store and retrie
   - Behaviors
     - Once the shard has been successfully transferred an exchange report is sent to the Bridge for the shard to confirm the transfer.
 
+-----------------------------------------
+
 ## Storj Client
 
 A Client will transfer files to and from the Storj network. It will encrypt and erasure encode the file and coordinate with a Storj Node to store file pointer and meta data to later retrieve the file. The Client transfers shards directly to other Storj Nodes over HTTP concurrently. Implements SIP5 and SIP9.
@@ -410,6 +414,8 @@ A Client will transfer files to and from the Storj network. It will encrypt and 
 - For each shard an Exchange Report is sent to Client’s Node to report its success or failure. This information can later be used to improve the ability to retrieve the files.
 - If there are any shards that didn’t receive location information, the Client will recover those shards from the Reed-Solomon encoding.
 - The file will now be decrypted and the file returned to its original size.
+
+-----------------------------------------
 
 ## References
 
