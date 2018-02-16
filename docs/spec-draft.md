@@ -410,3 +410,20 @@ A Client will transfer files to and from the Storj network. It will encrypt and 
 - For each shard an Exchange Report is sent to Client’s Node to report its success or failure. This information can later be used to improve the ability to retrieve the files.
 - If there are any shards that didn’t receive location information, the Client will recover those shards from the Reed-Solomon encoding.
 - The file will now be decrypted and the file returned to its original size.
+
+## References
+
+- “Storj Whitepaper v1” https://storj.io/storj2014.pdf
+- “Storj Whitepaper v2” https://storj.io/storj.pdf
+- “File Encryption and Erasure Encoding Standard (SIP5)” https://github.com/Storj/sips/blob/master/sip-0005.md
+- “Farmer Load Balancing Based on Reputation (SIP6)” https://github.com/Storj/sips/blob/master/sip-0006.md
+- "Bandwidth Reputation and Accounting (SIP9)” https://github.com/Storj/sips/blob/master/sip-0009.md
+- “Basic access authentication” https://en.wikipedia.org/wiki/Basic_access_authentication
+- “Elliptic Curve Digital Signature Algorithm (ECDSA)” https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm
+- “The Cryptographic Doom Principle” https://www.moxie.org/blog/the-cryptographic-doom-principle/
+- “Advanced Encryption Standard (AES)” https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
+- “CTR Block cipher mode of operation” https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)
+- “Hash-based message authentication code (HMAC)” https://en.wikipedia.org/wiki/Hash-based_message_authentication_code
+- “Hash-based message authentication code” https://en.wikipedia.org/wiki/Galois/Counter_Mode
+- “Mnemonic code for generating deterministic keys (BIP39)” https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
+- “Reed–Solomon error correction” https://en.wikipedia.org/wiki/Reed%E2%80%93Solomon_error_correction
