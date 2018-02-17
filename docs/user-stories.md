@@ -28,6 +28,7 @@ Because I want stream a file from the network to a remote server
  **WHEN** my Storj Node shards the file for upload   
  **THEN** my Storj Node encodes equal sized shards of the file with a stream encoding for codata  
   **AND** uses a burst length that can satisfy 2f + 1 replicas  
+
 ---
 # A User should be able to access a file from the Storj Network from any Storj Node  
 As a user  
