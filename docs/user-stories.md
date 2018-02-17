@@ -124,24 +124,24 @@ After joining I will be compensated for resources
 ============
 
 ## Users paying for storage
-1. As a user paying for storage
-   I want my data to be available at any time
-   So that I can download anything I've uploaded
+1. As a user paying for storage  
+   I want my data to be available at any time  
+   So that I can download anything I've uploaded  
 
-## Users running farmer nodes
-1. As a farmer
-   I want to be able to independently track and/or calculate performance and billing-related data
-   So that I can trust and act on that information
+## Users running farmer nodes  
+1. As a farmer  
+   I want to be able to independently track and/or calculate performance and billing-related data  
+   So that I can trust and act on that information  
 
-1. As a farmer
-   I want to be paid for what I store
-   So that I'm not wasting valuable space
+1. As a farmer  
+   I want to be paid for what I store  
+   So that I'm not wasting valuable space  
 
-## Third-party developers (using storj)
-1. As a third-party developer
-   I want (user access control / app ids / permissions)
-   So that I don't have to (authentication / registration / key management)
+## Third-party developers (using storj)  
+1. As a third-party developer  
+   I want (user access control / app ids / permissions)  
+   So that I don't have to (authentication / registration / key management)  
 
-1. As a third-party developer
-   I want to be able to use storj in multiple languages
-   So that I have options
+1. As a third-party developer  
+   I want to be able to use storj in multiple languages  
+   So that I have options  
