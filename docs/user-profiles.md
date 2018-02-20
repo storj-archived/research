@@ -5,6 +5,13 @@
 - Several applications are running concurrently on a machine and it would be better to have a shared resource to talk to for storage, rather than for each application to implement it themselves. This has the same benefits of a shared library over static.
 - Has 4k video from drones flying over historically significant areas and wants to be able to share the footage quickly with people across the Earth.
 
+## The Newbie-thusiast
+- Learned about Bitcoin over Thanksgiving 2017.
+- Wants an easy way to upload and dependably download pieces of their music library and high-definition photography (~80gb total).
+- Appreciates ~aesthetics~, easily scared away by ugly interfaces.
+- Holds a few coins but freaks out and sells the dip sometimes.
+- Wants to learn more about mining/farming but is too shy to post in the RocketChat for help.
+
 ## The Crypto Entrepreneur
 - Has an excess of underutilized storage and bandwidth.
 - Interested in a future where people have strong data security.
