@@ -21,19 +21,32 @@
 - Cryptocurrency payout incentives can encourage people to contribute resources to the network and share computing and storage resources.
 
 ## Data Structures
+
+- Directory Descriptor
+  - Authorization
+    - Can only be written and modified by authenticating as the user
+  - Data
+    - id (used for identifying the directory, must be a unique 256-bit number)
+    - user (public key hash)
+    - created (timestamp)
+    - name (encrypted)
+    - hmac (to verify the listing ids)
+    - listing (describes a sequence of file or directory ids)
+
 - File Descriptor
   - Authorization
     - Can only be written and modified by authenticating as the user
   - Data
+    - id (used for key derivation and encryption, and for identifying the file, must be a unique 256-bit number)
     - user (able to be cryptographically authenticated, e.g. a public key hash)
     - filename (encrypted)
     - created (timestamp)
-    - index (used for key derivation and encryption)
-    - hmac (used for authentication, depends the type/algo and the value)
+    - hmac (used for shard data authentication, depends the type/algo and the value)
     - bytes (the size of the file in bytes)
     - data (encrypted data, less than 2MB)
     - shards (describes a sequence of shard hashes that make up a larger file, greater than 2MB)
     - tags (a list of tags for searching files)
+
 - Shard Description
   - Authorization
     - Requires network consensus with auditing to add and remove the list of nodes that are currently storing a particular shard. The shard descriptor can be read by all nodes so that the network can automatically replicate and repair shards, and cryptocurrency payments can be made for storing data.
@@ -45,6 +58,7 @@
     - begin (when the data was originally stored for a farmer)
     - end (when the data was no longer stored for a farmer)
     - id (an identify for the farmer node that can be used to find the location in the network)
+
 - Node Descriptor
   - Authorization
     - Can only be created or modified by authenticating as the node, and can be read by anyone. There should be some cost associated with creating this data, for example posting a cryptocurrency bond or performing proof-of-work hashing, such as defined in hashcash.

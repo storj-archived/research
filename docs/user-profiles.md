@@ -18,6 +18,14 @@
 - Ran out of space on Dropbox.
 - Scared of losing money, does not hold crypto, does not know what a "rig" is. Thinks encryption sounds good.
 
+## The Adventurer
+- Uses KeePassXC to manage passwords and wants a "remote" folder to be able to keep the password database (.kdbx) updated, and available from multiple devices.
+- Wants to be able to make updates to files frequently.
+- Uses several different devices and operating systems including: Debian Sid, Windows 10, macOS, Android and iOS.
+- Wants a secure distributed storage solution.
+- Does not want to rely 100% on a third-party provider with a single point of failure.
+- Is familiar with hardware security devices such as YubiKey and Trezor.
+
 ## The Crypto Entrepreneur
 - Has an excess of underutilized storage and bandwidth.
 - Interested in a future where people have strong data security.
