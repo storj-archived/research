@@ -5,6 +5,19 @@
 - Several applications are running concurrently on a machine and it would be better to have a shared resource to talk to for storage, rather than for each application to implement it themselves. This has the same benefits of a shared library over static.
 - Has 4k video from drones flying over historically significant areas and wants to be able to share the footage quickly with people across the Earth.
 
+## The Newbie-thusiast
+- Learned about Bitcoin over Thanksgiving 2017.
+- Wants an easy way to upload and dependably download pieces of their high-definition photography (~80gb total).
+- Appreciates ~aesthetics~, easily scared away by ugly interfaces.
+- Holds a few coins but freaks out and sells the dip sometimes.
+- Wants to learn more about mining/farming but is too shy to post in the RocketChat for help.
+
+## The Crypto-Scared/Lite User
+- Wants to encrypt and store their music library, from embarrassing GarageBand recordings to highly coveted synth beats. Wants to share these precious beats with a select few.
+- Has a Macbook Air, which is used primarily for word processing and web surfing.
+- Ran out of space on Dropbox.
+- Scared of losing money, does not hold crypto, does not know what a "rig" is. Thinks encryption sounds good.
+
 ## The Crypto Entrepreneur
 - Has an excess of underutilized storage and bandwidth.
 - Interested in a future where people have strong data security.
@@ -25,7 +38,7 @@
 - Wants to sleep well at night free of concerns that servers may be down.
 - Working on software that is secure by default.
 - Wants to join combined efforts to increase adoption of security focused software.
-- Works in several different programing languages and platforms.
+- Works in several different programming languages and platforms.
 
 ## Site Reliability Engineers
 - Wants to have strong guarantee that data is secure from loss, tampering or compromise.
