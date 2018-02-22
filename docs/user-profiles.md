@@ -22,15 +22,19 @@
 - Has an excess of underutilized storage and bandwidth.
 - Interested in a future where people have strong data security.
 - Is involved with cryptocurrency projects and holds several coins and tokens.
+- Wants to be able to independently track and/or calculate performance and billing-related data, so that I can trust and act on that information.
+- Does not want to waste resources and valuable space.
 - Has an interest in information technology.
 
 ## File Sharing Applications
+- Wants data uploaded to be available at any time to download.
 - Users want to pay for storage with EUR or USD as it’s the currency they deal with for business and already widely adopted.
 - Wants a secure and convenient way to access files between computers and devices.
 - Wants a way to be create revenue for their free/libre software project.
 - Wants to be able to get started quickly.
 - Uses full disk encryption and cares about information security.
 - Organization as file/directory structure is typical with many small to large files.
+- Wants streamlined way to handle user authentication, permissions, registration and key management.
 
 ## Software Engineering Teams
 - Needs a secure way to store user data for their software that isn’t based on geographic location or any specific hardware device.
@@ -38,7 +42,7 @@
 - Wants to sleep well at night free of concerns that servers may be down.
 - Working on software that is secure by default.
 - Wants to join combined efforts to increase adoption of security focused software.
-- Works in several different programming languages and platforms.
+- Works in several different programming languages and platforms to have options.
 
 ## Site Reliability Engineers
 - Wants to have strong guarantee that data is secure from loss, tampering or compromise.
