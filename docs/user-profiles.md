@@ -12,11 +12,12 @@
 - Holds a few coins but freaks out and sells the dip sometimes.
 - Wants to learn more about mining/farming but is too shy to post in the RocketChat for help.
 
-## The Crypto-Scared/Lite User
+## The Lite User
 - Wants to encrypt and store their music library, from embarrassing GarageBand recordings to highly coveted synth beats. Wants to share these precious beats with a select few.
 - Has a Macbook Air, which is used primarily for word processing and web surfing.
 - Ran out of space on Dropbox.
-- Scared of losing money, does not hold crypto, does not know what a "rig" is. Thinks encryption sounds good.
+- Has heard of Bitcoin from the news, however that is about all.
+- Thinks encryption sounds good for privacy.
 
 ## The Adventurer
 - Uses KeePassXC to manage passwords and wants a "remote" folder to be able to keep the password database (.kdbx) updated, and available from multiple devices.
@@ -59,6 +60,8 @@
 - Has a small cluster of Bitcoin and Ethereum miners.
 - Doesn’t want servers keeping them up at night.
 - Familiar with many several GNU/Linux distributions and automation and monitoring tools.
+- Familiar with CLI tools `scp`, `rsync` and others
+- Wants to automate with bash scripts, and to have non-interactive modes for CLI tools for bash scripts.
 
 ## Video Production Teams
 - Video editors need a secure, fast and private way to be able to archive and share video with each other before production is finished.
