@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Storj/research/lang/storj-node-go/db"
 	"github.com/Storj/research/lang/storj-node-go/routes"
 	"github.com/boltdb/bolt"
 	"github.com/kataras/iris"
