@@ -28,7 +28,7 @@ func StartDB() {
 	// }
 }
 
-func SetRoutes(app *iris.Framework) {
+func SetRoutes(app *iris.Application) {
 	app.Post("/users", db.CreateUser)
 	// app.Get("/users", db.ListUsers)
 	// app.Delete("/users/:id", db.DeleteUser)
