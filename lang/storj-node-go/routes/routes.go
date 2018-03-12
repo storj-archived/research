@@ -23,9 +23,9 @@ func StartDB() {
 		return nil
 	})
 
-	db = users.DB{
-		Bucket: b,
-	}
+	// db = users.DB{
+	// 	Bucket: b,
+	// }
 }
 
 func SetRoutes(app *iris.Framework) {

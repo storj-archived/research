@@ -22,15 +22,15 @@ func (db *DB) CreateUser(ctx iris.Context) {
 	err := ctx.ReadJSON(&user)
 
 	uu, err := uuid.NewV4()
-	abc := uu.String()
-	var dogs = []byte(abc)
+	uuidString := uu.String()
+	var uuidBytes = []byte(uuidString)
 
 	userBytes, err := json.Marshal(user)
 	if err != nil {
 		panic(err)
 	}
 
-	db.Bucket.Put(dogs, userBytes)
+	db.Bucket.Put(uuidBytes, userBytes)
 
 	if err != nil {
 		ctx.JSON(iris.StatusNotAcceptable)
