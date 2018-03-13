@@ -1,9 +1,5 @@
 package boltdb
 
-import (
-	"fmt"
-)
-
 type User struct {
 	Id       int64  `json:"id"`
 	Username string `json:"uuid"`
@@ -16,6 +12,6 @@ func (bdb *Client) CreateUser(key, value []byte) {
 }
 
 // DeleteUser calls bolt database instance to delete user
-func (b *Bucket) DeleteUser(key []byte) {
-	b.Delete(key)
+func (bdb *Client) DeleteUser(key []byte) {
+	bdb.UsersBucket.Delete(key)
 }

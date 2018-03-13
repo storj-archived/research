@@ -33,9 +33,6 @@ func (u *Users) CreateUser(ctx iris.Context) {
 
 // DeleteUser deletes a user key/value from users bucket
 func (u *Users) DeleteUser(ctx iris.Context) {
-	id, err := ctx.ParamInt("id")
-	if err != nil {
-		ctx.JSON(iris.StatusNotFound)
-		return
-	}
+	// magically get uuid from id
+	// u.DB.DeleteUser([]byte(uuid))
 }
