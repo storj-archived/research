@@ -32,6 +32,5 @@ func main() {
 // SetRoutes defines all restful routes on the service
 func SetRoutes(app *iris.Application, users routes.Users) {
 	app.Post("/users", users.CreateUser)
-	// app.Get("/users", db.ListUser)
-	// app.Delete("/users/"id", db.DeleteUser)
+	app.Delete("/users/:id", db.DeleteUser)
 }

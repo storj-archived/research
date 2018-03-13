@@ -13,7 +13,7 @@ type Users struct {
 }
 
 // CreateUser instantiates a new user
-func (newUser *Users) CreateUser(ctx iris.Context) {
+func (u *Users) CreateUser(ctx iris.Context) {
 	user := &boltdb.User{}
 
 	if err := ctx.ReadJSON(user); err != nil {
@@ -28,5 +28,14 @@ func (newUser *Users) CreateUser(ctx iris.Context) {
 	uu, err := uuid.NewV4()
 	var uuidBytes = []byte(uu.String())
 
-	newUser.DB.CreateUser(uuidBytes, userBytes)
+	u.DB.CreateUser(uuidBytes, userBytes)
+}
+
+// DeleteUser deletes a user key/value from users bucket
+func (u *Users) DeleteUser(ctx iris.Context) {
+	id, err := ctx.ParamInt("id")
+	if err != nil {
+		ctx.JSON(iris.StatusNotFound)
+		return
+	}
 }
