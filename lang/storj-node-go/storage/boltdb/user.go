@@ -2,7 +2,7 @@ package boltdb
 
 type User struct {
 	Id       int64  `json:"id"`
-	Username string `json:"uuid"`
+	Username string `json:"username"`
 	Uuid     string `json:"uuid"`
 }
 

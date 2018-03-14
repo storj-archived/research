@@ -20,19 +20,22 @@ func (u *Users) CreateUser(ctx iris.Context) {
 		ctx.JSON(iris.StatusNotAcceptable)
 	}
 
+	uu, err := uuid.NewV4()
+	user.Uuid = uu.String()
+
 	userBytes, err := json.Marshal(user)
 	if err != nil {
 		ctx.JSON(iris.StatusNotAcceptable)
 	}
 
-	uu, err := uuid.NewV4()
-	var uuidBytes = []byte(uu.String())
+	usernameKey := []byte(user.Username)
 
-	u.DB.CreateUser(uuidBytes, userBytes)
+	u.DB.CreateUser(usernameKey, userBytes)
+
 }
 
 // DeleteUser deletes a user key/value from users bucket
 func (u *Users) DeleteUser(ctx iris.Context) {
-	// magically get uuid from id
-	// u.DB.DeleteUser([]byte(uuid))
+	user := &boltdb.User{}
+	u.DB.DeleteUser([]byte(user.Username))
 }
