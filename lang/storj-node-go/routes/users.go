@@ -31,7 +31,6 @@ func (u *Users) CreateUser(ctx iris.Context) {
 	usernameKey := []byte(user.Username)
 
 	u.DB.CreateUser(usernameKey, userBytes)
-
 }
 
 // DeleteUser deletes a user key/value from users bucket
