@@ -1,14 +1,19 @@
 package main
 
 import (
-	"github.com/kataras/iris"
 	"fmt"
+	"github.com/boltdb/bolt"
+	"github.com/kataras/iris"
+	"github.com/satori/go.uuid"
+	"log"
+	"time"
 )
 
-// define structs for types 
+// define structs for types
 type User struct {
-	Id int64 `json:"id"`
+	Id       int64  `json:"id"`
 	Username string `json:"username"`
+	Uuid     string `json:"uuid"`
 }
 
 type Contact struct {
@@ -18,9 +23,22 @@ type Contact struct {
 func main() {
 	app := iris.Default()
 
+	db, err := bolt.Open("my.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
 	app.Post("/users", func(ctx iris.Context) {
+
 		user := User{}
 		err := ctx.ReadJSON(&user)
+
+		// could be more concise
+        /* NB: raises error
+        u, err := uuid.NewV4()
+            user.Uuid = u.String()
+        */
 
 		if (err != nil) {
 			fmt.Println("error reading form" + err.Error())
@@ -33,7 +51,8 @@ func main() {
 
 	app.Get("/", func(ctx iris.Context) {
 		user := make(map[string]string)
-		user["username"] = "test123" 
+
+		user["username"] = "admin"
 		ctx.JSON(user)
 	})
 
@@ -43,9 +62,10 @@ func main() {
 		id, _ := ctx.Params().GetInt64("id")
 
 		user.Id = id
-		user.Username ="admin"
+		user.Username = "admin"
 
 		ctx.JSON(user)
+
 	})
 
 	app.Get("/contacts", func(ctx iris.Context) {
