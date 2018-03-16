@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/kataras/iris"
-	"github.com/twinj/uuid"
 	"fmt"
 )
 
@@ -10,7 +9,6 @@ import (
 type User struct {
 	Id int64 `json:"id"`
 	Username string `json:"username"`
-	uuid `json:"uuid"`
 }
 
 type Contact struct {
@@ -24,12 +22,11 @@ func main() {
 		user := User{}
 		err := ctx.ReadJSON(&user)
 
-		user.Uuid = uuid.NewV4()
-
 		if (err != nil) {
 			fmt.Println("error reading form" + err.Error())
 			return
 		}
+
 		fmt.Printf("User: %v", user)
 		ctx.JSON(user)
 	})
