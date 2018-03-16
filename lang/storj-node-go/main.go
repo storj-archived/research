@@ -51,6 +51,7 @@ func main() {
 
 	app.Get("/", func(ctx iris.Context) {
 		user := make(map[string]string)
+
 		user["username"] = "admin"
 		ctx.JSON(user)
 	})
