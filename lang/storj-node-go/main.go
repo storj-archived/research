@@ -35,10 +35,10 @@ func main() {
 		err := ctx.ReadJSON(&user)
 
 		// could be more concise
-    /* NB: raises error
-    u, err := uuid.NewV4()
-		user.Uuid = u.String()
-    */
+        /* NB: raises error
+        u, err := uuid.NewV4()
+            user.Uuid = u.String()
+        */
 
 		if (err != nil) {
 			fmt.Println("error reading form" + err.Error())
