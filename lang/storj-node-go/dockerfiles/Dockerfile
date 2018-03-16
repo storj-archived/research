@@ -6,6 +6,6 @@ RUN cd /go/src/research/lang/storj-node-go/ && go build -o main
 # final stage
 FROM alpine
 WORKDIR /app
-COPY --from=build-env /go/src/research/lang/storj-node-go/ /app/
+COPY --from=build-env /go/src/research/lang/storj-node-go/main /app/
 
 ENTRYPOINT ./main
