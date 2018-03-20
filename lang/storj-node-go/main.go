@@ -2,86 +2,41 @@ package main
 
 import (
 	"fmt"
-	"github.com/boltdb/bolt"
+	"github.com/Storj/research/lang/storj-node-go/routes"
+	"github.com/Storj/research/lang/storj-node-go/storage/boltdb"
 	"github.com/kataras/iris"
-	"github.com/satori/go.uuid"
-	"log"
-	"time"
 )
 
-// define structs for types
-type User struct {
-	Id       int64  `json:"id"`
-	Username string `json:"username"`
-	Uuid     string `json:"uuid"`
-}
-
-type Contact struct {
-	Id int64 `json:"id"`
-}
-
 func main() {
+
+	bdb, err := boltdb.New()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	defer bdb.DB.Close()
+
+	users := routes.Users{DB: bdb}
 	app := iris.Default()
 
-	db, err := bolt.Open("my.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	app.Post("/users", func(ctx iris.Context) {
-
-		user := User{}
-		err := ctx.ReadJSON(&user)
-
-		// could be more concise
-        /* NB: raises error
-        u, err := uuid.NewV4()
-            user.Uuid = u.String()
-        */
-
-		if (err != nil) {
-			fmt.Println("error reading form" + err.Error())
-			return
-		}
-
-		fmt.Printf("User: %v", user)
-		ctx.JSON(user)
-	})
-
-	app.Get("/", func(ctx iris.Context) {
-		user := make(map[string]string)
-
-		user["username"] = "admin"
-		ctx.JSON(user)
-	})
-
-	app.Get("/users/{id:long min(1)}", func(ctx iris.Context) {
-		var user User
-
-		id, _ := ctx.Params().GetInt64("id")
-
-		user.Id = id
-		user.Username = "admin"
-
-		ctx.JSON(user)
-
-	})
-
-	app.Get("/contacts", func(ctx iris.Context) {
-		users := make([]string, 0)
-		users = append(users, "user1")
-		ctx.JSON(users)
-	})
-
-	app.Get("/contacts/{id:long min(1)}", func(ctx iris.Context) {
-
-		details := make(map[string]string)
-		details["id"] = ctx.Params().Get("id")
-		details["username"] = "admin"
-
-		ctx.JSON(details)
-	})
+	SetRoutes(app, users)
 
 	app.Run(iris.Addr(":8080"))
+}
+
+// SetRoutes defines all restful routes on the service
+func SetRoutes(app *iris.Application, users routes.Users) {
+	app.Post("/users", users.CreateUser)
+	app.Delete("/users/:id", users.DeleteUser)
+	// app.Get("/users/confirmations/:token", users.Confirm)
+	// app.Get("/files?startDate=<timestamp>?tag=<tag>", files.ListFiles)
+	// app.Get("/file-ids/:name", files.GetFileId)
+	// app.Get("/files/:file?skip=<number>&limit=<number>&exclude=<node-ids>", files.GetPointers)
+	// app.Delete("/files/:file", files.DeleteFile)
+	// app.Post("/files", files.NewFile)
+	// app.Put("/files/:file/shards/:index", files.AddShardToFile)
+	// app.Post("/reports", reports.CreateReport)
+	// app.Get("/contacts?address=<address>&skip=<number>&limit=<number>", contacts.GetContacts)
+
 }
