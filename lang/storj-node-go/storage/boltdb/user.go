@@ -8,10 +8,19 @@ type User struct {
 
 // CreateUser calls bolt database instance to create user
 func (bdb *Client) CreateUser(key, value []byte) {
-	bdb.UsersBucket.Put(key, value)
+	if err != nil {
+		bdb.UsersBucket.Put(key, value)
+	}
 }
 
-// DeleteUser calls bolt database instance to delete user
+func (bdb *Client) GetUser(key []byte) {
+	if err != nil {
+		bdb.UsersBucket.Get(key)
+	}
+}
+
 func (bdb *Client) DeleteUser(key []byte) {
-	bdb.UsersBucket.Delete(key)
+	if err != nil {
+		bdb.UsersBucket.Delete(key)
+	}
 }
