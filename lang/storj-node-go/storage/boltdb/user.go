@@ -1,20 +1,27 @@
 package boltdb
 
+import (
+	"github.com/boltdb/bolt"
+	"github.com/google/uuid"
+)
+
 type User struct {
-	Id       int64  `json:"id"`
-	Username string `json:"username"`
-	Uuid     string `json:"uuid"`
+	Id       uuid.UUID `json:"id"`
+	Email    string    `json:"email"`
+	Username string    `json:"username"`
 }
 
 // CreateUser calls bolt database instance to create user
-func (bdb *Client) CreateUser(key, value []byte) {
-	bdb.UsersBucket.Put(key, value)
+func (bdb *Client) CreateUser(key, value []byte) error {
+	return bdb.DB.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("users"))
+
+		return b.Put(key, value)
+	})
 }
 
 func (bdb *Client) GetUser(key []byte) {
-	bdb.UsersBucket.Get(key)
 }
 
 func (bdb *Client) DeleteUser(key []byte) {
-	bdb.UsersBucket.Delete(key)
 }

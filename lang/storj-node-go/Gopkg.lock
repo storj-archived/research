@@ -25,6 +25,12 @@
   revision = "72acac2207479d21dd45898c2a4264246c818148"
 
 [[projects]]
+  name = "github.com/boltdb/bolt"
+  packages = ["."]
+  revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
+  version = "v1.3.1"
+
+[[projects]]
   branch = "master"
   name = "github.com/eknkc/amber"
   packages = [
@@ -46,10 +52,22 @@
   revision = "97eac295f74b5fbb7fd3113e35f4ccf3c816e389"
 
 [[projects]]
+  name = "github.com/google/uuid"
+  packages = ["."]
+  revision = "064e2069ce9c359c118179501254f67d7d37ba24"
+  version = "0.2"
+
+[[projects]]
   branch = "master"
   name = "github.com/hashicorp/go-version"
   packages = ["."]
   revision = "4fe82ae3040f80a03d04d2cccb5606a626b8e1ee"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/hasit/bolter"
+  packages = ["."]
+  revision = "da4eb7c6e2111c61806644e3759477689a9140d2"
 
 [[projects]]
   branch = "master"
@@ -149,6 +167,24 @@
   version = "v1.1"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/kval-access-language/kval-boltdb"
+  packages = ["."]
+  revision = "f3797777c95e35a2adccb327b9aa7f87d7e9da63"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/kval-access-language/kval-parse"
+  packages = ["."]
+  revision = "b96aa5a2633058d920bcc127c9d6cfb5584f49f6"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/kval-access-language/kval-scanner"
+  packages = ["."]
+  revision = "4f097cacd289dac1876adfcd58dd534a93c8c149"
+
+[[projects]]
   name = "github.com/mattn/go-colorable"
   packages = ["."]
   revision = "167de6bfdfba052fa6b2d3664c8f5272e23c9072"
@@ -159,6 +195,12 @@
   packages = ["."]
   revision = "0360b2af4f38e8d38c7fce2a9f4e702702d73a39"
   version = "v0.0.3"
+
+[[projects]]
+  name = "github.com/mattn/go-runewidth"
+  packages = ["."]
+  revision = "9e777a8366cce605130a531d2cd6363d07ad7317"
+  version = "v0.0.2"
 
 [[projects]]
   branch = "master"
@@ -186,6 +228,18 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/olekukonko/tablewriter"
+  packages = ["."]
+  revision = "b8a9be070da40449e501c3c4730a889e42d87a9e"
+
+[[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
+  branch = "master"
   name = "github.com/ryanuber/columnize"
   packages = ["."]
   revision = "abc90934186a77966e2beeac62ed966aac0561d5"
@@ -203,10 +257,10 @@
   revision = "86672fcb3f950f35f2e675df2240550f2a50762f"
 
 [[projects]]
-  name = "github.com/twinj/uuid"
+  name = "github.com/urfave/cli"
   packages = ["."]
-  revision = "835a10bbd6bce40820349a68b1368a62c3c5617c"
-  version = "v1.0.0"
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
 
 [[projects]]
   branch = "master"
@@ -247,6 +301,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ea0cf7b0839151f55ce0449303d0adf2167dc2249f89797429b58936169b2ebe"
+  inputs-digest = "b01fa829a6a6bfc2eed1f0257be58d21808ee895e6d13e6d84bf99f15be3fc45"
   solver-name = "gps-cdcl"
   solver-version = 1
