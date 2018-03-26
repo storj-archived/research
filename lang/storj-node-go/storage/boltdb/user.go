@@ -60,4 +60,9 @@ func (bdb *Client) UpdateUser(user User) error {
 }
 
 func (bdb *Client) DeleteUser(key []byte) {
+	if err := bdb.DB.Update(func(tx *bolt.Tx) error {
+		return tx.Bucket([]byte("users")).Delete(key)
+	}); err != nil {
+		log.Println(err)
+	}
 }
