@@ -12,7 +12,6 @@ type Users struct {
 	DB *boltdb.Client
 }
 
-// CreateUser instantiates a new user
 func (u *Users) CreateUser(ctx iris.Context) {
 	user := boltdb.User{
 		Id:       uuid.New(),
@@ -58,7 +57,6 @@ func (u *Users) UpdateUser(ctx iris.Context) {
 	}
 }
 
-// DeleteUser deletes a user key/value from users bucket
 func (u *Users) DeleteUser(ctx iris.Context) {
 	userId := ctx.Params().Get("id")
 	u.DB.DeleteUser([]byte(userId))
