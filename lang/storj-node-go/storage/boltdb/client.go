@@ -34,7 +34,6 @@ func New() (*Client, error) {
 	}
 
 	return &Client{
-		DB:          db,
-		UsersBucket: b,
+		DB: db,
 	}, nil
 }

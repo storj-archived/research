@@ -1,11 +1,10 @@
 package routes
 
 import (
-	"encoding/json"
-	"fmt"
 	"github.com/Storj/research/lang/storj-node-go/storage/boltdb"
 	"github.com/google/uuid"
 	"github.com/kataras/iris"
+	"log"
 )
 
 // Users contains items needed to process requests to the user namespace
@@ -15,7 +14,7 @@ type Users struct {
 
 // CreateUser instantiates a new user
 func (u *Users) CreateUser(ctx iris.Context) {
-	user := &boltdb.User{
+	user := boltdb.User{
 		Id:       uuid.New(),
 		Username: ctx.Params().Get("id"),
 		Email:    `dece@trali.zzd`,
@@ -25,19 +24,20 @@ func (u *Users) CreateUser(ctx iris.Context) {
 		ctx.JSON(iris.StatusNotAcceptable)
 	}
 
-	userBytes, err := json.Marshal(user)
-	if err != nil {
-		ctx.JSON(iris.StatusNotAcceptable)
-	}
-
-	usernameKey := []byte(user.Username)
-
-	u.DB.CreateUser(usernameKey, userBytes)
+	u.DB.CreateUser(user)
 }
 
 func (u *Users) GetUser(ctx iris.Context) {
-	user := &boltdb.User{}
-	u.DB.GetUser([]byte(user.Username))
+	userId := ctx.Params().Get("id")
+	userInfo, err := u.DB.GetUser([]byte(userId))
+	if err != nil {
+		log.Println(err)
+	}
+
+	ctx.Writef("%s's info is: %s", userId, userInfo)
+}
+
+func (u *Users) EditUser(ctx iris.Context) {
 }
 
 // DeleteUser deletes a user key/value from users bucket
