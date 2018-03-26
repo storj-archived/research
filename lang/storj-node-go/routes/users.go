@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"encoding/json"
 	"github.com/Storj/research/lang/storj-node-go/storage/boltdb"
+	"github.com/google/uuid"
 	"github.com/kataras/iris"
-	uuid "github.com/satori/go.uuid"
+	"log"
 )
 
 // Users contains items needed to process requests to the user namespace
@@ -14,27 +14,52 @@ type Users struct {
 
 // CreateUser instantiates a new user
 func (u *Users) CreateUser(ctx iris.Context) {
-	user := &boltdb.User{}
+	user := boltdb.User{
+		Id:       uuid.New(),
+		Username: ctx.Params().Get("id"),
+		Email:    `dece@trali.zzd`,
+	}
 
 	if err := ctx.ReadJSON(user); err != nil {
 		ctx.JSON(iris.StatusNotAcceptable)
 	}
 
-	uu, err := uuid.NewV4()
-	user.Uuid = uu.String()
+	u.DB.CreateUser(user)
+}
 
-	userBytes, err := json.Marshal(user)
+func (u *Users) GetUser(ctx iris.Context) {
+	userId := ctx.Params().Get("id")
+	userInfo, err := u.DB.GetUser([]byte(userId))
 	if err != nil {
-		ctx.JSON(iris.StatusNotAcceptable)
+		log.Println(err)
 	}
 
-	usernameKey := []byte(user.Username)
+	ctx.Writef("%s's info is: %s", userId, userInfo)
+}
 
-	u.DB.CreateUser(usernameKey, userBytes)
+// Updates only email for now
+// Uses two db queries now, can refactor
+func (u *Users) UpdateUser(ctx iris.Context) {
+	userId := ctx.Params().Get("id")
+	userInfo, err := u.DB.GetUser([]byte(userId))
+	if err != nil {
+		log.Println(err)
+	}
+
+	updated := boltdb.User{
+		Id:       userInfo.Id,
+		Username: userInfo.Username,
+		Email:    ctx.Params().Get("email"),
+	}
+
+	err1 := u.DB.UpdateUser(updated)
+	if err1 != nil {
+		log.Println(err)
+	}
 }
 
 // DeleteUser deletes a user key/value from users bucket
 func (u *Users) DeleteUser(ctx iris.Context) {
-	user := &boltdb.User{}
-	u.DB.DeleteUser([]byte(user.Username))
+	userId := ctx.Params().Get("id")
+	u.DB.DeleteUser([]byte(userId))
 }
