@@ -37,11 +37,29 @@ func (u *Users) GetUser(ctx iris.Context) {
 	ctx.Writef("%s's info is: %s", userId, userInfo)
 }
 
-func (u *Users) EditUser(ctx iris.Context) {
+// Updates only email for now
+// Uses two db queries now, can refactor
+func (u *Users) UpdateUser(ctx iris.Context) {
+	userId := ctx.Params().Get("id")
+	userInfo, err := u.DB.GetUser([]byte(userId))
+	if err != nil {
+		log.Println(err)
+	}
+
+	updated := boltdb.User{
+		Id:       userInfo.Id,
+		Username: userInfo.Username,
+		Email:    ctx.Params().Get("email"),
+	}
+
+	err1 := u.DB.UpdateUser(updated)
+	if err1 != nil {
+		log.Println(err)
+	}
 }
 
 // DeleteUser deletes a user key/value from users bucket
 func (u *Users) DeleteUser(ctx iris.Context) {
-	user := &boltdb.User{}
-	u.DB.DeleteUser([]byte(user.Username))
+	userId := ctx.Params().Get("id")
+	u.DB.DeleteUser([]byte(userId))
 }

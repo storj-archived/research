@@ -29,7 +29,7 @@ func main() {
 func SetRoutes(app *iris.Application, users routes.Users) {
 	app.Post("/users/:id", users.CreateUser)
 	app.Get("/users/:id", users.GetUser)
-	app.Put("/users/:id", users.EditUser)
+	app.Put("/users/:id/:email", users.UpdateUser)
 	app.Delete("/users/:id", users.DeleteUser)
 	// app.Get("/users/confirmations/:token", users.Confirm)
 	// app.Get("/files?startDate=<timestamp>?tag=<tag>", files.ListFiles)

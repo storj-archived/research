@@ -37,14 +37,26 @@ func (bdb *Client) GetUser(key []byte) (User, error) {
 			log.Println("user not found")
 			return nil
 		} else {
-			log.Println("user found")
 			err1 := json.Unmarshal(v, &userInfo)
 			return err1
 		}
 	})
 
-	log.Println("returning from GetUser")
 	return userInfo, err
+}
+
+func (bdb *Client) UpdateUser(user User) error {
+	return bdb.DB.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("users"))
+
+		usernameKey := []byte(user.Username)
+		userBytes, err := json.Marshal(user)
+		if err != nil {
+			log.Println(err)
+		}
+
+		return b.Put(usernameKey, userBytes)
+	})
 }
 
 func (bdb *Client) DeleteUser(key []byte) {
